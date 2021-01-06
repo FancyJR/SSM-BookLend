@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.howie.dao.MyMapper">
+    <select id="user" resultType="String">
+        SELECT username
+        FROM user
+        WHERE userid = 1
+    </select>
+    <select id="login" resultType="java.util.Map">
+        SELECT phone, password, username
+        FROM user
+        WHERE phone = #{arg0} and password = #{arg1}
+    </select>
+    <insert id="insertUser">
+        INSERT INTO user (phone, password) VALUES (#{arg0}, #{arg1})
+    </insert>
+    <update id="borrowBook">
+        UPDATE book_list
+        SET phone = #{arg1}, book_status = 1
+        WHERE book_isbn = #{arg0}
+    </update>
+    <select id="getBookList" resultType="java.util.Map">
+        SELECT book_img, book_name, book_type, content, book_isbn
+        FROM book_list where book_status = #{book_status}
+    </select>
+    <select id="getScanBookInfo" resultType="java.util.Map">
+        SELECT book_img, book_name, book_type, book_status
+        FROM book_list where book_isbn = #{book_isbn}
+    </select>
+    <select id="isUserExist" resultType="java.util.Map">
+        SELECT phone, username
+        FROM user where phone = #{phone}
+    </select>
+    <select id="getHaveBorrowBook" resultType="java.util.Map">
+        SELECT book_img, book_name, book_type, book_isbn
+        FROM book_list where phone = #{phone}
+    </select>
+    <update id="giveBackBook">
+        UPDATE book_list
+        SET phone = "", book_status = 0
+        WHERE book_isbn = #{book_isbn}
+    </update>
+</mapper>
